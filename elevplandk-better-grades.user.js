@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             elevplan.dk-better-grades@tyilo.com
 // @name           Better grades view for elevplan.dk
-// @version        1.1.2
+// @version        2.0
 // @namespace      
 // @author         Tyilo
 // @description    
