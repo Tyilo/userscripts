@@ -7,7 +7,7 @@
 // @description    
 // @include        *://www.askpeople.dk/ask/real/scheme.php*
 // @run-at         document-start
-// @updateURL      http://tyilo.com/userscripts/askpeoplespammer.user.js
+// @updateURL      https://raw.github.com/Tyilo/userscripts/master/askpeoplespammer.user.js
 // ==/UserScript==
 document.addEventListener('DOMContentLoaded', function()
 {

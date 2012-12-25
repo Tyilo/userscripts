@@ -7,7 +7,7 @@
 // @description    
 // @include        http://boards.4chan.org/*/*
 // @run-at         document-start
-// @updateURL      http://tyilo.com/userscripts/4chancombo.user.js
+// @updateURL      https://raw.github.com/Tyilo/userscripts/master/4chancombo.user.js
 // ==/UserScript==
 /*function bufferToString( buf )
 {

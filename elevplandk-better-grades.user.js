@@ -7,7 +7,7 @@
 // @description    
 // @include        https://www.elevplan.dk/app/moduler/uddannelsesbog/skolepapirer.asp*
 // @run-at         document-start
-// @updateURL      http://tyilo.com/userscripts/elevplandk-better-grades.user.js
+// @updateURL      https://raw.github.com/Tyilo/userscripts/master/elevplandk-better-grades.user.js
 // ==/UserScript==
 document.addEventListener('DOMContentLoaded', function()
 {

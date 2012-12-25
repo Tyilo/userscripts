@@ -10,7 +10,7 @@
 // @match          http://*.facebook.com/pokes*
 // @match          https://*.facebook.com/pokes*
 // @run-at         document-start
-// @updateURL      http://tyilo.com/userscripts/fbpoke.user.js
+// @updateURL      https://raw.github.com/Tyilo/userscripts/master/fbpoke.user.js
 // ==/UserScript==
 
 document.addEventListener('DOMContentLoaded', function()
