@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             4chan-get@tyilo.com
 // @name           4chan GET
-// @version        1.0
+// @version        1.0.1
 // @namespace      http://tyilo.com/
 // @author         Asger Drewsen <asgerdrewsen@gmail.com>
 // @description    Requires 4chan X and its QuickReply
@@ -127,6 +127,6 @@ document.addEventListener('DOMNodeInserted', function(event)
 	if(target.attr('id') === 'qr')
 	{
 		var form = $('<form><fieldset id="getfieldset" style="border: none; margin: 0; padding: 0;">GET: <input type="number" id="getnum"> <button type="submit" id="getbutton">GO</button><br>When number of posts before appears: <input type="number" id="getbefore" value="2" size="2"><br>Probes: <input type="number" id="getprobes" value="1" size="2"></fieldset></form>').submit(startCheck);
-		target.append(form);
+		target.append('<hr>').append(form);
 	}
 });
