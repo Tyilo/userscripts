@@ -90,7 +90,14 @@ function postStatus(number, callback)
 			switch(response.status)
 			{
 				case 200:
-					callback(true);
+					if(response.responseHeaders === '') // Chrome bug
+					{
+						callback(false);
+					}
+					else
+					{
+						callback(true);
+					}
 					break;
 				case 404:
 					callback(false);
