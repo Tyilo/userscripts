@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             elevplan.dk-better-grades@tyilo.com
 // @name           Better grades view for elevplan.dk
-// @version        2.0
+// @version        2.1
 // @namespace      
 // @author         Tyilo
 // @description    
@@ -92,7 +92,9 @@ document.addEventListener('DOMContentLoaded', function()
 		
 		grades[dates[i]] = {
 			sum: 0,
-			count: 0
+			count: 0,
+            weightedSum: 0,
+            weightedCount: 0
 		};
 	}
 	thead += '</tr></thead>';
@@ -119,8 +121,10 @@ document.addEventListener('DOMContentLoaded', function()
 				var grade = data[subject][type][dates[i]];
 				if(grade)
 				{
-					grades[dates[i]].sum += Number(grade) * weight;
-					grades[dates[i]].count += weight;
+                    grades[dates[i]].sum += Number(grade);
+                    grades[dates[i]].count += 1;
+					grades[dates[i]].weightedSum += Number(grade) * weight;
+					grades[dates[i]].weightedCount += weight;
 				}
 				else
 				{
@@ -135,15 +139,32 @@ document.addEventListener('DOMContentLoaded', function()
 	
 	tbody += '</tbody>';
 	
-	var tfoot = '<tfoot><tr><td>Gennemsnit</td><td> - </td>';
-	
-	for(var i = 0; i < dates.length; i++)
-	{
-		var average = grades[dates[i]].sum / grades[dates[i]].count;
-		tfoot += '<td>' + round(average, 2) + '</td>';
-	}
-	
-	tfoot += '</tr></tfoot>';
+    var values = [
+        {
+            'title': 'Gennemsnit',
+            'sumKey': 'sum',
+            'countKey': 'count'
+        },
+        {
+            'title': 'Vægted Gennemsnit',
+            'sumKey': 'weightedSum',
+            'countKey': 'weightedCount'
+        }];
+    
+    var tfoot = '<tfoot>';
+    for(var n = 0; n < 2; n++)
+    {
+        tfoot += '<tr><td>' + values[n].title + '</td><td> - </td>';
+        
+        for(var i = 0; i < dates.length; i++)
+        {
+            var average = grades[dates[i]][values[n].sumKey] / grades[dates[i]][values[n].countKey];
+            tfoot += '<td>' + round(average, 2) + '</td>';
+        }
+        
+        tfoot += '</tr>';
+    }
+    tfoot += '</tfoot>';
 	
 	var table = '<table>' + thead + tfoot + tbody + '</table>';
 	var div = document.createElement('div');
