@@ -10,6 +10,10 @@
 // @updateURL      https://raw.github.com/Tyilo/userscripts/master/typerace_hack.user.js
 // ==/UserScript==
 
+if(!window.unsafeWindow) {
+    window.unsafeWindow = window;
+}
+
 function loadScript(url, callback)
 {
 	// adding the script tag to the head as suggested before
@@ -32,7 +36,7 @@ function setText(el) {
 }
 
 function init() {
-	jQuery('body').on('keydown', 'input.txtInput', function() {
+	unsafeWindow.jQuery('body').on('keydown', 'input.txtInput', function() {
 		if(this.value === '') {
 			setText(this);
 		}
@@ -40,5 +44,5 @@ function init() {
 }
 
 loadScript('https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js', function() {
-	jQuery(init);
+	unsafeWindow.jQuery(init);
 });
