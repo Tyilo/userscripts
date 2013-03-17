@@ -40,5 +40,5 @@ function init() {
 }
 
 loadScript('https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js', function() {
-	jQuery(init)
+	jQuery(init);
 });
