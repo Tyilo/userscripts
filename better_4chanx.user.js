@@ -8,52 +8,55 @@
 // @include        http://boards.4chan.org/*
 // @include        http://sys.4chan.org/*
 // @run-at         document-start
+// @updateURL      https://raw.github.com/Tyilo/userscripts/master/better_4chanx.user.js
 // ==/UserScript==
 
 window.addEventListener('DOMContentLoaded', function(event)
 {
-    // Better image resize:
-    document.querySelector('.opContainer + .replyContainer').style.clear = 'both';
-    
-    // Better scrolling:
-    window.addEventListener('keydown', function(event)
-    {
-        if(event.keyCode == 32 && document.getElementById('imageExpand').checked && !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement))
-        {
-            event.preventDefault();
-            var images = document.querySelectorAll('img + img');
-            var length = images.length;
-            var currentScroll = window.pageYOffset;
-            if(!event.shiftKey)
-            {
-		for(var i = 0; i < length; i++)
+	var unsafeWindow = window.unsafeWindow || window;
+	
+	// Better image resize:
+	document.querySelector('.opContainer + .replyContainer').style.clear = 'both';
+	
+	// Better scrolling with space:
+	window.addEventListener('keydown', function(event)
+	{
+		if(event.keyCode == 32 && document.querySelector('.contract-all-shortcut') && !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement))
 		{
-                    if(images[i].y > currentScroll)
-                    {
-			window.scrollTo(0, images[i].y);
-                        break;
-                    }
-                }
-                if(i == length) //At last image
-                {
-                    window.scrollTo(0, 999999);
-                }
-            }
-            else
-            {
-                for(var i = length - 1; i >= 0; i--)
-		{
-                    if(images[i].y < currentScroll)
-                    {
-			window.scrollTo(0, images[i].y);
-                        break;
-                    }
+			event.preventDefault();
+			var images = document.querySelectorAll('img + img');
+			var length = images.length;
+			var currentScroll = window.pageYOffset;
+			if(!event.shiftKey)
+			{
+				for(var i = 0; i < length; i++)
+				{
+					if(images[i].y > currentScroll)
+					{
+						window.scrollTo(0, images[i].y);
+						break;
+					}
+				}
+				if(i == length) //At last image
+				{
+					window.scrollTo(0, 999999);
+				}
+			}
+			else
+			{
+				for(var i = length - 1; i >= 0; i--)
+				{
+					if(images[i].y < currentScroll)
+					{
+						window.scrollTo(0, images[i].y);
+						break;
+					}
+				}
+				if(i == -1) //At first image
+				{
+					window.scrollTo(0, 0);
+				}
+			}
 		}
-                if(i == -1) //At first image
-                {
-                    window.scrollTo(0, 0);
-                }
-            }
-	}
-    });
+	});
 });
