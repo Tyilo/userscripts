@@ -33,13 +33,13 @@ window.addEventListener('DOMContentLoaded', function(event)
 				{
 					if(images[i].y > currentScroll)
 					{
-						window.scrollTo(0, images[i].y);
+						unsafeWindow.scrollTo(0, images[i].y);
 						break;
 					}
 				}
 				if(i == length) //At last image
 				{
-					window.scrollTo(0, 999999);
+					unsafeWindow.scrollTo(0, 999999);
 				}
 			}
 			else
@@ -48,13 +48,13 @@ window.addEventListener('DOMContentLoaded', function(event)
 				{
 					if(images[i].y < currentScroll)
 					{
-						window.scrollTo(0, images[i].y);
+						unsafeWindow.scrollTo(0, images[i].y);
 						break;
 					}
 				}
 				if(i == -1) //At first image
 				{
-					window.scrollTo(0, 0);
+					unsafeWindow.scrollTo(0, 0);
 				}
 			}
 		}
