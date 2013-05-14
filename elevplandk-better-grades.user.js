@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             elevplan.dk-better-grades@tyilo.com
 // @name           Better grades view for elevplan.dk
-// @version        2.1
+// @version        2.2
 // @namespace      
 // @author         Tyilo
 // @description    
@@ -40,6 +40,11 @@ document.addEventListener('DOMContentLoaded', function()
 		'B': 1.5,
 		'C': 1
 	};
+	var types = {
+		'MDT': 'Mundtlig',
+		'SKR': 'Skriftlig',
+		'SAM': 'Sammenlagt'
+	};
 	
 	var dates = [];
 	var data = {};
@@ -53,7 +58,14 @@ document.addEventListener('DOMContentLoaded', function()
 			var cells = rows[i].querySelectorAll('td');
 			var date = cells[0].textContent;
 			var subject = cells[1].textContent.replace(/(htx, )|(niveau )/g, '');
-			var type = cells[2].textContent.match('MDT')? 'Mundtlig': 'Skriftlig';
+			var typeContent = cells[2].textContent;
+			var type = '-';
+			for(key in types) {
+				if(typeContent.match(key)) {
+					type = types[key];
+				}
+			}
+			//var type = cells[2].textContent.match(/^MDT/)? 'Mundtlig':  'Skriftlig';
 			var grade = cells[3].textContent;
 			
 			if(!data[subject])
