@@ -1,13 +1,13 @@
 // ==UserScript==
-// @id             elevplan.dk-better-grades@tyilo.com
-// @name           Better grades view for elevplan.dk
-// @version        2.2
-// @namespace      
-// @author         Tyilo
-// @description    
-// @include        https://www.elevplan.dk/app/moduler/uddannelsesbog/skolepapirer.asp*
-// @run-at         document-start
-// @updateURL      https://raw.github.com/Tyilo/userscripts/master/elevplandk-better-grades.user.js
+// @id           elevplan.dk-better-grades@tyilo.com
+// @name         Better grades view for elevplan.dk
+// @version      2.3
+// @namespace     
+// @author       Tyilo
+// @description  
+// @include      https://www.elevplan.dk/app/moduler/uddannelsesbog/skolepapirer.asp*
+// @run-at       document-start
+// @updateURL    https://raw.github.com/Tyilo/userscripts/master/elevplandk-better-grades.user.js
 // ==/UserScript==
 document.addEventListener('DOMContentLoaded', function()
 {
