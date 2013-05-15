@@ -17,7 +17,7 @@ function init()
 				callback(key, object[key]);
 			}
 		}
-	};
+	}
 	
 	function clone(object, deep) {
 		var newObject = {};
@@ -29,7 +29,15 @@ function init()
 			}
 		});
 		return newObject;
-	};
+	}
+	
+	function addTo(object, object2) {
+		each(object2, function(key, value) {
+			if(object.hasOwnProperty(key)) {
+				object[key] += value;
+			}
+		});
+	}
 	
 	var addStyle = window.GM_addStyle || function addStyle(css)
 	{
@@ -194,13 +202,16 @@ function init()
 					{
 						var gradeValue = Number(grade);
 						if(!isNaN(grade)) {
-							tableGrades[tableDates[i]].sum += gradeValue;
-							tableGrades[tableDates[i]].count += 1;
-							tableGrades[tableDates[i]].weightedSum += gradeValue * weight;
-							tableGrades[tableDates[i]].weightedCount += weight;
+							var gradeAverage = {
+								sum: gradeValue,
+								count: 1,
+								weightedSum: gradeValue * weight,
+								weightedCount: weight
+							};
+							addTo(tableGrades[tableDates[i]], gradeAverage);
 							
 							newestGrade = grade;
-							newestGradeValue = tableGrades[tableDates[i]];
+							newestGradeValue = gradeAverage;
 						}
 					}
 					else
@@ -211,12 +222,7 @@ function init()
 				}
 				if(newestGrade)
 				{
-					for(var key in newestGradeValue) {
-						if(newestGradeValue.hasOwnProperty(key))
-						{
-							newestGradeCount[key] += newestGradeValue[key];
-						}
-					}
+					addTo(newestGradeCount, newestGradeValue);
 				}
 				else
 				{
