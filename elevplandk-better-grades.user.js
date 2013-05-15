@@ -182,13 +182,16 @@ document.addEventListener('DOMContentLoaded', function()
 					var grade = tableData[subject][type][tableDates[i]];
 					if(grade)
 					{
-						tableGrades[tableDates[i]].sum += Number(grade);
-						tableGrades[tableDates[i]].count += 1;
-						tableGrades[tableDates[i]].weightedSum += Number(grade) * weight;
-						tableGrades[tableDates[i]].weightedCount += weight;
-						
-						newestGrade = grade;
-						newestGradeValue = tableGrades[tableDates[i]];
+						var gradeValue = Number(grade);
+						if(!isNaN(grade)) {
+							tableGrades[tableDates[i]].sum += gradeValue;
+							tableGrades[tableDates[i]].count += 1;
+							tableGrades[tableDates[i]].weightedSum += gradeValue * weight;
+							tableGrades[tableDates[i]].weightedCount += weight;
+							
+							newestGrade = grade;
+							newestGradeValue = tableGrades[tableDates[i]];
+						}
 					}
 					else
 					{
