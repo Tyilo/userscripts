@@ -269,7 +269,30 @@ function init()
 	
 	window.data = data;
 	
-	addStyle("#bettergrades { margin-top: 3em; } #bettergrades table { margin: auto; margin-top: 50px; margin-bottom: 50px; border-collapse: collapse; } #bettergrades thead, #bettergrades tfoot { background-color: lightgray; } #bettergrades th, #bettergrades td { padding: 0.5em; border: 1px solid; }");	
+	addStyle("\
+	#bettergrades { \
+		margin-top: 3em; \
+	} \
+	#bettergrades table { \
+		margin: auto; \
+		margin-top: 50px; \
+		margin-bottom: 50px; \
+		border-collapse: collapse; \
+	} \
+	#bettergrades thead, #bettergrades tfoot { \
+		background-color: lightgray; \
+	} \
+	#bettergrades thead th:last-child, #bettergrades tfoot td:last-child { \
+		background-color: mediumaquamarine; \
+	} \
+	#bettergrades tbody td:last-child { \
+		background-color: lightgreen; \
+	} \
+	#bettergrades th, #bettergrades td { \
+		padding: 0.5em; \
+		border: 1px solid; \
+	} \
+	");
 }
 
 document.addEventListener('DOMContentLoaded', init);
