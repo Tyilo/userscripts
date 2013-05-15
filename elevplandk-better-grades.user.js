@@ -296,3 +296,7 @@ function init()
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+if(document.readyState === 'interactive' || document.readyState === 'complete') {
+	init();
+}
