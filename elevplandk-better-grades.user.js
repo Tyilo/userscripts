@@ -9,7 +9,7 @@
 // @run-at       document-start
 // @updateURL    https://raw.github.com/Tyilo/userscripts/master/elevplandk-better-grades.user.js
 // ==/UserScript==
-document.addEventListener('DOMContentLoaded', function()
+function init()
 {
 	function each(object, callback) {
 		for(var key in object) {
@@ -162,6 +162,11 @@ document.addEventListener('DOMContentLoaded', function()
 		var tableData = data[tableType];
 		for(var subject in tableData)
 		{
+			if(!tableData.hasOwnProperty(subject))
+			{
+				continue;
+			}
+			
 			var types = Object.keys(tableData[subject]).length;
 			var totalWeight = (gradeWeight[subject.match(/.$/)] || defaultWeight);
 			var weight = totalWeight / types;
@@ -170,6 +175,11 @@ document.addEventListener('DOMContentLoaded', function()
 			var firstRow = true;
 			for(var type in tableData[subject])
 			{
+				if(!tableData[subject].hasOwnProperty(type))
+				{
+					continue;
+				}
+				
 				if(!firstRow)
 				{
 					tbody += '<tr>';
@@ -202,7 +212,10 @@ document.addEventListener('DOMContentLoaded', function()
 				if(newestGrade)
 				{
 					for(var key in newestGradeValue) {
-						newestGradeCount[key] += newestGradeValue[key];
+						if(newestGradeValue.hasOwnProperty(key))
+						{
+							newestGradeCount[key] += newestGradeValue[key];
+						}
 					}
 				}
 				else
@@ -257,4 +270,6 @@ document.addEventListener('DOMContentLoaded', function()
 	window.data = data;
 	
 	addStyle("#bettergrades { margin-top: 3em; } #bettergrades table { margin: auto; margin-top: 50px; margin-bottom: 50px; border-collapse: collapse; } #bettergrades thead, #bettergrades tfoot { background-color: lightgray; } #bettergrades th, #bettergrades td { padding: 0.5em; border: 1px solid; }");	
-});
+}
+
+document.addEventListener('DOMContentLoaded', init);
