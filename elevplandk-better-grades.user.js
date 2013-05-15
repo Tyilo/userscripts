@@ -9,8 +9,7 @@
 // @run-at       document-start
 // @updateURL    https://raw.github.com/Tyilo/userscripts/master/elevplandk-better-grades.user.js
 // ==/UserScript==
-function init()
-{
+function init() {
 	function each(object, callback) {
 		for(var key in object) {
 			if(object.hasOwnProperty(key)) {
@@ -39,8 +38,7 @@ function init()
 		});
 	}
 	
-	var addStyle = window.GM_addStyle || function addStyle(css)
-	{
+	var addStyle = window.GM_addStyle || function addStyle(css) {
 		var head = document.getElementsByTagName('head')[0];
 		var style = document.createElement('style');
 		style.textContent = css;
@@ -48,8 +46,7 @@ function init()
 		head.appendChild(style);
 	};
 	
-	function oldestToNewest(a, b)
-	{
+	function oldestToNewest(a, b) {
 		var time1 = parseDate(a);
 		var time2 = parseDate(b);
 		return time1 - time2;
@@ -57,14 +54,12 @@ function init()
 	
 	var months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
 	
-	function parseDate(date)
-	{
+	function parseDate(date) {
 		var words = date.split(' ');
 		return Number(words[1]) * 100 + Number(months.indexOf(words[0]));
 	}	
 	
-	function round(number, decimals)
-	{
+	function round(number, decimals) {
 		var a = Math.pow(10, decimals);
 		return Math.round(number * a) / a;
 	}
@@ -91,12 +86,10 @@ function init()
 	var dates = {};
 	var data = {};
 	var tables = document.querySelectorAll('table#fold_karakterer > tbody');
-	for(var t = 1; t < tables.length; t += 2)
-	{
+	for(var t = 1; t < tables.length; t += 2) {
 		var rows = tables[t].querySelectorAll('tr.FormField');
 		
-		for(var i = 0; i < rows.length; i++)
-		{
+		for(var i = 0; i < rows.length; i++) {
 			var cells = rows[i].querySelectorAll('td');
 			var date = cells[0].textContent;
 			var subject = cells[1].textContent.replace(/(htx, )|(niveau )/g, '');
@@ -116,8 +109,7 @@ function init()
 			data[tableType][subject][type][date] = grade;
 			
 			dates[tableType] = dates[tableType] || [];
-			if(dates[tableType].indexOf(date) === -1)
-			{
+			if(dates[tableType].indexOf(date) === -1) {
 				dates[tableType].push(date);
 			}
 		}
@@ -128,8 +120,7 @@ function init()
 	
 	var grades = {};
 	
-	for(var tableIndex = 0; tableIndex < tableTypes.length; tableIndex++)
-	{
+	for(var tableIndex = 0; tableIndex < tableTypes.length; tableIndex++) {
 		var tableType = tableTypes[tableIndex];
 		if(Object.keys(dates).indexOf(tableType) === -1) {
 			continue;
@@ -155,8 +146,7 @@ function init()
 			weightedCount: 0
 		};
 		
-		for(var i = 0; i < tableDates.length; i++)
-		{
+		for(var i = 0; i < tableDates.length; i++) {
 			thead += '<th>' + tableDates[i] + '</th>';
 			
 			tableGrades[tableDates[i]] = clone(noGrades);
@@ -168,10 +158,8 @@ function init()
 		
 		var newestGradeCount = clone(noGrades);
 		var tableData = data[tableType];
-		for(var subject in tableData)
-		{
-			if(!tableData.hasOwnProperty(subject))
-			{
+		for(var subject in tableData) {
+			if(!tableData.hasOwnProperty(subject)) {
 				continue;
 			}
 			
@@ -181,25 +169,20 @@ function init()
 			
 			tbody += '<tr><td rowspan="' + types + '">' + subject + '</td>';
 			var firstRow = true;
-			for(var type in tableData[subject])
-			{
-				if(!tableData[subject].hasOwnProperty(type))
-				{
+			for(var type in tableData[subject]) {
+				if(!tableData[subject].hasOwnProperty(type)) {
 					continue;
 				}
 				
-				if(!firstRow)
-				{
+				if(!firstRow) {
 					tbody += '<tr>';
 				}
 				tbody += '<td>' + type + '</td>';
 				var newestGrade;
 				var newestGradeValue;
-				for(var i = 0; i < tableDates.length; i++)
-				{
+				for(var i = 0; i < tableDates.length; i++) {
 					var grade = tableData[subject][type][tableDates[i]];
-					if(grade)
-					{
+					if(grade) {
 						var gradeValue = Number(grade);
 						if(!isNaN(grade)) {
 							var gradeAverage = {
@@ -214,18 +197,15 @@ function init()
 							newestGradeValue = gradeAverage;
 						}
 					}
-					else
-					{
+					else {
 						grade = '-';
 					}
 					tbody += '<td>' + grade + '</td>';
 				}
-				if(newestGrade)
-				{
+				if(newestGrade) {
 					addTo(newestGradeCount, newestGradeValue);
 				}
-				else
-				{
+				else {
 					newestGrade = '-';
 				}
 				tbody += '<td>' + newestGrade + '</td>';
@@ -236,13 +216,11 @@ function init()
 		
 		tbody += '</tbody>';
 		
-		var values = [
-		{
+		var values = [ {
 			'title': 'Gennemsnit',
 			'sumKey': 'sum',
 			'countKey': 'count'
-		},
-		{
+		}, {
 			'title': 'Vægted Gennemsnit',
 			'sumKey': 'weightedSum',
 			'countKey': 'weightedCount'
@@ -252,12 +230,10 @@ function init()
 		tableDates.push('newest');
 		
 		var tfoot = '<tfoot>';
-		for(var n = 0; n < 2; n++)
-		{
+		for(var n = 0; n < 2; n++) {
 			tfoot += '<tr><td>' + values[n].title + '</td><td> - </td>';
 			
-			for(var i = 0; i < tableDates.length; i++)
-			{
+			for(var i = 0; i < tableDates.length; i++) {
 				var average = tableGrades[tableDates[i]][values[n].sumKey] / tableGrades[tableDates[i]][values[n].countKey];
 				tfoot += '<td>' + round(average, 2) + '</td>';
 			}
