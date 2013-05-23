@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id           elevplan.dk-better-grades@tyilo.com
 // @name         Better grades view for elevplan.dk
-// @version      2.3.1
+// @version      2.3.2
 // @namespace     
 // @author       Tyilo
 // @description  
@@ -221,7 +221,7 @@ function init() {
 			'sumKey': 'sum',
 			'countKey': 'count'
 		}, {
-			'title': 'Vægted Gennemsnit',
+			'title': 'Vægtet Gennemsnit',
 			'sumKey': 'weightedSum',
 			'countKey': 'weightedCount'
 		}];
