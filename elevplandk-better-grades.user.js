@@ -235,7 +235,7 @@ function init() {
 			
 			for(var i = 0; i < tableDates.length; i++) {
 				var average = tableGrades[tableDates[i]][values[n].sumKey] / tableGrades[tableDates[i]][values[n].countKey];
-				tfoot += '<td>' + round(average, 2) + '</td>';
+				tfoot += '<td>' + round(average, 1) + '</td>';
 			}
 			
 			tfoot += '</tr>';
