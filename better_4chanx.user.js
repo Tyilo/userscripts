@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             better4chanx@tyilo
 // @name           Better 4chan X
-// @version        1.1.1
+// @version        1.1.2
 // @namespace      http://tyilo.com/
 // @author         Tyilo
 // @description    
