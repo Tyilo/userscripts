@@ -18,7 +18,15 @@ window.addEventListener('DOMContentLoaded', function(event)
 	// Auto-resize all images on opening a thread in a new tab
 	if(window.location.pathname.match(/^\/[^\/]*\/res\//))
 	{
-		document.querySelector('.expand-all-shortcut').click();
+		setTimeout(function check_expand() {
+			var el1 = document.querySelector('.expand-all-shortcut');
+			var el2 = document.querySelector('.contract-all-shortcut');
+			if(el1) {
+				el1.click();
+			} else if(!el2) {
+				setTimeout(check_expand, 100);
+			}
+		}, 0);
 	}
 	
 	// Better image resize:
@@ -27,7 +35,7 @@ window.addEventListener('DOMContentLoaded', function(event)
 	// Better scrolling with space:
 	window.addEventListener('keydown', function(event)
 	{
-		if(event.keyCode == 32 && document.querySelector('.contract-all-shortcut') && !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement))
+		if(event.keyCode === 32 && document.querySelector('.contract-all-shortcut') && !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement))
 		{
 			event.preventDefault();
 			var images = document.querySelectorAll('img + img');
@@ -43,7 +51,7 @@ window.addEventListener('DOMContentLoaded', function(event)
 						break;
 					}
 				}
-				if(i == length) //At last image
+				if(i === length) //At last image
 				{
 					unsafeWindow.scrollTo(0, 999999);
 				}
@@ -58,7 +66,7 @@ window.addEventListener('DOMContentLoaded', function(event)
 						break;
 					}
 				}
-				if(i == -1) //At first image
+				if(i === -1) //At first image
 				{
 					unsafeWindow.scrollTo(0, 0);
 				}
