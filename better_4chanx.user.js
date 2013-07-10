@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             better4chanx@tyilo
 // @name           Better 4chan X
-// @version        1.1.2
+// @version        1.1.3
 // @namespace      http://tyilo.com/
 // @author         Tyilo
 // @description    
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function(event)
 		if(event.keyCode === 32 && document.querySelector('.contract-all-shortcut') && !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement))
 		{
 			event.preventDefault();
-			var images = document.querySelectorAll('img + img');
+			var images = document.querySelectorAll('img.full-image');
 			var length = images.length;
 			var currentScroll = window.pageYOffset;
 			if(!event.shiftKey)
