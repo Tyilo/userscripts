@@ -7,7 +7,7 @@
 // @description    ...
 // @include        *://*
 // @run-at         document-end
-// @updateURL      https://raw.github.com/Tyilo/userscripts/master/epilepsy.js
+// @updateURL      https://raw.github.com/Tyilo/userscripts/master/epilepsy.user.js
 // ==/UserScript==
 var white = true;
 
