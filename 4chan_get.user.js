@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             4chan-get@tyilo.com
 // @name           4chan GET
-// @version        1.0.1
+// @version        1.1
 // @namespace      http://tyilo.com/
 // @author         Asger Drewsen <asgerdrewsen@gmail.com>
 // @description    Requires 4chan X and its QuickReply
@@ -19,7 +19,7 @@ var probing = false;
 
 function enableButton()
 {
-    $('#getbutton').text('GO');
+	$('#getbutton').text('GO');
 	$('#getfieldset').prop('disabled', false);
 }
 
@@ -116,6 +116,47 @@ function postStatus(number, callback)
 	});
 }
 
+var maximumNewest;
+var minimumNewest;
+var currentTest;
+
+function getLatestCallback(status) {
+	if(status) {
+		minimumNewest = currentTest;
+	} else {
+		maximumNewest = currentTest - 1;
+	}
+	
+	if(minimumNewest === maximumNewest) {
+		$('#getnum').val(minimumNewest);
+		
+		$('#latestbutton').text('Get latest post number');
+		$('#latestbutton').prop('disabled', false);
+		return;
+	}
+	
+	if(maximumNewest === Infinity) {
+		currentTest = minimumNewest + 25;        
+	} else {
+		currentTest = Math.floor((minimumNewest + maximumNewest) / 2 + 1);
+	}
+	
+	postStatus(currentTest, getLatestCallback);
+}
+
+function getLatest(event) {
+	$('#latestbutton').text('Finding latest...');
+	$('#latestbutton').prop('disabled', true);
+	
+	var latestInThread = Number($('.postNum').last().text().replace('No.', ''));
+	
+	maximumNewest = Infinity;
+	minimumNewest = latestInThread;
+	currentTest = latestInThread;
+	
+	postStatus(latestInThread, getLatestCallback);
+}
+
 $(function()
 {
 	board = window.location.pathname.split('/')[1];
@@ -126,7 +167,8 @@ document.addEventListener('DOMNodeInserted', function(event)
 	var target = $(event.target);
 	if(target.attr('id') === 'qr')
 	{
-		var form = $('<form><fieldset id="getfieldset" style="border: none; margin: 0; padding: 0;">GET: <input type="number" id="getnum"> <button type="submit" id="getbutton">GO</button><br>When number of posts before appears: <input type="number" id="getbefore" value="2" size="2"><br>Probes: <input type="number" id="getprobes" value="1" size="2"></fieldset></form>').submit(startCheck);
+		var form = $('<form><fieldset id="getfieldset" style="border: none; margin: 0; padding: 0;"><button type="button" id="latestbutton">Get latest post number</button><br>GET: <input type="number" id="getnum"> <button type="submit" id="getbutton">GO</button><br>When number of posts before appears: <input type="number" id="getbefore" value="1" size="2"><br>Probes: <input type="number" id="getprobes" value="10" size="2"></fieldset></form>').submit(startCheck);
+		form.find('#latestbutton').click(getLatest);
 		target.append('<hr>').append(form);
 	}
 });
