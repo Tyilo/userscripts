@@ -356,6 +356,13 @@ loadjQuery(function($) {
         }
         
         var geURLprefix = 'http://services.runescape.com/m=itemdb_rs/api/graph/';
+        
+        if(itemID == '995') //Item ID for GP
+        {
+          callback('1');  
+        }
+        else
+        {
         $.ajax({
             dataType: 'json',
             url: xsURL(geURLprefix + itemID + '.json'),
@@ -382,6 +389,7 @@ loadjQuery(function($) {
                 }, 100 + Math.random() * 200);
             }
         });
+        }
     }
 });
 
