@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             wealth-evaluator@tyilo.com
 // @name           Wealth Evaluator
-// @version        1.0
+// @version        1.1
 // @namespace      http://tyilo.com/
 // @author         Asger Drewsen <asgerdrewsen@gmail.com>
 // @description    Calculates the GE value of your bank
@@ -252,6 +252,109 @@ loadjQuery(function($) {
     }
     
     function getPrice(itemID, callback) {
+        var priceOverrides = {
+            // Coins
+            995: 1
+        };
+        
+        if(itemID in priceOverrides) {
+            callback(priceOverrides[itemID]);
+            return;
+        }
+        
+        var itemSubstitutions = [
+            // Pernix, Torva, Virtus: helm, body & legs + Zaryte bow
+            {
+                items: 10,
+                degradedPerItem: 2,
+                degradedSpace: 4,
+                tradeableSpace: 4,
+                degradedIDBase: 20137,
+                tradeableIDBase: 20135
+            },
+            // Pernix, Torva, Virtus: gloves & boots
+            {
+                items: 6,
+                degradedPerItem: 3,
+                degradedSpace: 3,
+                tradeableSpace: 2,
+                degradedIDBase: 24974,
+                tradeableIDBase: 25058
+            },
+            // Drygores
+            {
+                items: 6,
+                degradedPerItem: 2,
+                degradedSpace: 4,
+                tradeableSpace: 4,
+                degradedIDBase: 26581,
+                tradeableIDBase: 26579
+            },
+            // Ascension crossbow & off-hand
+            {
+                items: 2,
+                degradedPerItem: 2,
+                degradedSpace: 4,
+                trabeableSpace: 4,
+                degradedIDBase: 28439,
+                tradeableIDBase: 28437
+            },
+            // Seismic wand & off-hand
+            {
+                items: 2,
+                degradedPerItem: 2,
+                degradedSpace: 4,
+                trabeableSpace: 4,
+                degradedIDBase: 28619,
+                tradeableIDBase: 28617
+            },
+            // Malevolent, Vengeful, Merciless: kiteshield
+            {
+                items: 3,
+                degradedPerItem: 2,
+                degradedSpace: 4,
+                tradeableSpace: 4,
+                degradedIDBase: 30007,
+                tradeableIDBase: 30005
+            },
+            // Virtus wand
+            {
+                items: 1,
+                degradedPerItem: 2,
+                degradedSpace: 1,
+                tradeableSpace: 1,
+                degradedIDBase: 30493,
+                tradeableIDBase: 25654
+            },
+            // Virtus book
+            {
+                items: 1,
+                degradedPerItem: 2,
+                degradedSpace: 1,
+                tradeableSpace: 1,
+                degradedIDBase: 30495,
+                tradeableIDBase: 25664 
+            }
+        ];
+        
+        for(var i = 0; i < itemSubstitutions.length; i++) {
+            var sub = itemSubstitutions[i];
+            var diff = itemID - sub.degradedIDBase;
+            var maxDiff = sub.degradedSpace * (sub.items - 1) + (sub.degradedPerItem - 1);
+            
+            if(diff < 0 || diff > maxDiff) {
+                continue;
+            }
+            
+            if(diff % sub.degradedSpace < sub.degradedPerItem) {
+                var num = Math.floor(diff / sub.degradedSpace);
+                
+                itemID = sub.tradeableIDBase + sub.tradeableSpace * num;
+                
+                break;
+            }
+        }
+        
         var geURLprefix = 'http://services.runescape.com/m=itemdb_rs/api/graph/';
         $.ajax({
             dataType: 'json',
