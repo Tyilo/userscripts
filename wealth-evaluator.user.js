@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             wealth-evaluator@tyilo.com
 // @name           Wealth Evaluator
-// @version        1.1
+// @version        1.1.1
 // @namespace      http://tyilo.com/
 // @author         Asger Drewsen <asgerdrewsen@gmail.com>
 // @description    Calculates the GE value of your bank
