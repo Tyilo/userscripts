@@ -34,7 +34,7 @@ function loadjQuery(callback) {
 // 1 = allow-any-origin (CORS)
 // 2 = whateverorigin clone (JSONP)
 // 3 = Yahoo YQL (CORS)
-var xsMethod = 1;
+var xsMethod = 0;
 
 function xsURL(url) {
     switch(xsMethod) {
@@ -58,7 +58,11 @@ function xsExtract(data) {
         case 2:
             return JSON.parse(data.contents);
         case 3:
-            return JSON.parse(data.query.results.html.body.p);
+            if(data.count > 0) {
+                return JSON.parse(data.query.results.html.body.p);
+            } else {
+                return null;
+            }
     }
 }
 
@@ -94,14 +98,18 @@ function displayNumber(num) {
     return prefix + suffix;
 }
 
+function isBankTab() {
+    return !!window.location.pathname.match(/\/comapp\/bank/);
+}
+
 loadjQuery(function($) {
     var origPushState = window.history.pushState;
     window.history.pushState = function() {
-        var wasBank = window.location.hash.indexOf('#/bank') === 0;
+        var wasBank = isBankTab();
         
         var returnValue = origPushState.apply(window.history, arguments);
         
-        var isBank = window.location.hash.indexOf('#/bank') === 0;
+        var isBank = isBankTab();
         
         if(wasBank && !isBank) {
             deinit();
@@ -224,7 +232,7 @@ loadjQuery(function($) {
                 if(i === numNewItems) {
                     loadingPrices = false;
                 }
-           })
+           });
         });
     }
     
@@ -355,12 +363,27 @@ loadjQuery(function($) {
             }
         }
         
+        function errorHandler() {
+            // retry
+            setTimeout(function() {
+                getPrice(itemID, callback);
+            }, 100 + Math.random() * 200);
+        }
+        
         var geURLprefix = 'http://services.runescape.com/m=itemdb_rs/api/graph/';
         $.ajax({
             dataType: 'json',
             url: xsURL(geURLprefix + itemID + '.json'),
             success: function(data) {
-                data = xsExtract(data);
+                try {
+                    data = xsExtract(data);
+                } catch(e) {
+                    data = null;
+                }
+                if(!data) {
+                    errorHandler();
+                    return;
+                }
                 
                 var priceList = data.daily;
                 var newestTimestamp = -1;
@@ -376,10 +399,7 @@ loadjQuery(function($) {
                     return;
                 }
                 
-                // retry
-                setTimeout(function() {
-                    getPrice(itemID, callback);
-                }, 100 + Math.random() * 200);
+                errorHandler();
             }
         });
     }
