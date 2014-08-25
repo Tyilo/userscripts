@@ -1,11 +1,12 @@
 // ==UserScript==
 // @id             wealth-evaluator@tyilo.com
 // @name           Wealth Evaluator
-// @version        1.1.1
+// @version        1.1.2
 // @namespace      http://tyilo.com/
 // @author         Asger Drewsen <asgerdrewsen@gmail.com>
 // @description    Calculates the GE value of your bank
 // @include        https://secure.runescape.com/m=world*/a=*/html5/comapp/comapp.ws*
+// @include        https://secure.runescape.com/m=world*/a=*/html5/comapp/*
 // @run-at         document-end
 // @updateURL      https://raw.github.com/Tyilo/userscripts/master/wealth-evaluator.user.js
 // ==/UserScript==
