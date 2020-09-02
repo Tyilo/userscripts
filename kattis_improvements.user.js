@@ -1,17 +1,16 @@
 // ==UserScript==
 // @name         Kattis Improvements
 // @namespace    http://tyilo.com/
-// @version      0.2.2
+// @version      0.2.3
 // @description  ...
 // @author       Tyilo
 // @match        https://*.kattis.com/*
 // @grant        none
+// @updateURL    https://github.com/Tyilo/userscripts/raw/master/kattis_improvements.user.js
 // ==/UserScript==
 
 var funcs = [
     [addInfluence, ['/universities/[^/]+', '/countries/[^/]+']],
-    [autoUpdateJudgement, ['/submissions/[^/]+']],
-    //[autoLanguage, ['/problems/[^/]+/submit']],
     [resubmitLink, ['/submissions/[^/]+']]
 ];
 
@@ -39,66 +38,6 @@ function addInfluence() {
         var influence = 1/f * Math.pow(1 - 1/f, i) * score;
         row.innerHTML += '<td>' + influence.toFixed(1) + '</td>';
     }
-}
-
-function autoUpdateJudgement() {
-    function getStatus() {
-        return document.querySelector('.status').textContent;
-    }
-
-    function isDone() {
-        return getStatus() !== 'Running';
-    }
-
-    function refreshResults() {
-        fetch(location.href, {credentials: 'include'})
-        .then(response => response.text())
-        .then(html => {
-            var template = document.createElement('template');
-            template.innerHTML = html;
-            var el1 = document.querySelector('#judge_table');
-            var el2 = template.content.querySelector('#judge_table');
-            if (!el1) {
-                if (!el2) {
-                    setTimeout(refreshResults, 500);
-                } else {
-                    location.reload();
-                }
-            } else {
-                el1.replaceWith(el2);
-                if (isDone()) {
-                    location.reload();
-                } else {
-                    setTimeout(refreshResults, 500);
-                }
-            }
-        });
-    }
-
-    if (!isDone()) {
-        refreshResults();
-    }
-}
-
-function autoLanguage() {
-    var map = {
-        '.py': 'Python 3',
-        '.cpp': 'C++',
-        '.java': 'Java'
-    };
-
-    var input = document.getElementById('sub_files_input');
-    input.addEventListener('change', function() {
-        console.log(input.files, input.files.length);
-        if(input.files.length > 0) {
-            var ext = input.files[0].name.match(/\.[^.]+$/);
-            var type = map[ext];
-            if(type) {
-                document.getElementById('language_select').value = type;
-                document.getElementById('select2-chosen-2').textContent = type;
-            }
-        }
-    });
 }
 
 function resubmitLink() {
