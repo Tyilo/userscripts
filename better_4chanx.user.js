@@ -1,13 +1,15 @@
 // ==UserScript==
 // @id             better4chanx@tyilo
 // @name           Better 4chan X
-// @version        1.3
+// @version        1.4
 // @namespace      http://tyilo.com/
 // @author         Tyilo
 // @description    
-// @include        http://boards.4chan.org/*
 // @include        https://boards.4chan.org/*
+// @include        https://boards.4channel.org/*
 // @run-at         document-start
+// @grant          GM_getValue
+// @grant          GM_setValue
 // @updateURL      https://raw.github.com/Tyilo/userscripts/master/better_4chanx.user.js
 // ==/UserScript==
 
@@ -20,7 +22,8 @@ var enableFeatures = {
 	thumbs_scrolling: false,
 	per_board_thread_sorting: true,
 	webm_controls: true,
-	webm_continue: true
+	webm_continue: true,
+	hide_autoscroll: true,
 };
 
 var board = (function() {
@@ -188,6 +191,16 @@ window.addEventListener('DOMContentLoaded', function(event) {
 			}
 		}
 	});
+
+	if(enableFeatures['hide_autoscroll']) {
+		window.addEventListener('keydown', function(e) {
+			if (e.key === 'x') {
+				setTimeout(function() {
+					document.dispatchEvent(new KeyboardEvent('keydown', {keyCode: 40}));
+				});
+			}
+		}, true);
+	}
 	
 	// Better scrolling with space:
 	window.addEventListener('keydown', function(event) {
