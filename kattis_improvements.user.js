@@ -1,12 +1,10 @@
 // ==UserScript==
 // @name         Kattis Improvements
 // @namespace    https://tyilo.com/
-// @version      0.2.5
+// @version      0.2.6
 // @description  ...
 // @author       Tyilo
 // @match        https://*.kattis.com/*
-// @grant        GM_setValue
-// @grant        GM_getValue
 // ==/UserScript==
 
 var funcs = [
@@ -61,22 +59,22 @@ function resubmitLink() {
 
 function openKattisLink() {
   var openKattisHost = "open.kattis.com";
-  var otherHost;
+  var href;
   if (location.host === openKattisHost) {
-    otherHost = GM_getValue("lastHost");
-    // Disable on open.kattis.com for now
-    return;
+    var m = location.pathname.match(/^(\/contests\/[^/]+)\/.+/);
+    if (m) {
+      href = location.href.replace(m[1], "");
+    }
   } else {
-    GM_setValue("lastHost", location.host);
-    otherHost = openKattisHost;
+    href = location.href.replace(location.host, openKattisHost);
   }
 
-  if (!otherHost) return;
+  if (!href) return;
 
   var nav = document.querySelector(".main-nav ul");
   var link = document.createElement("a");
-  link.href = location.href.replace(location.host, otherHost);
-  link.textContent = otherHost;
+  link.href = href;
+  link.textContent = "open.kattis.com";
   var container = document.createElement("li");
   container.appendChild(link);
   nav.appendChild(container);
