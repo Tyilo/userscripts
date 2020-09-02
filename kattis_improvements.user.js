@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kattis Improvements
 // @namespace    http://tyilo.com/
-// @version      0.2.3
+// @version      0.2.4
 // @description  ...
 // @author       Tyilo
 // @match        https://*.kattis.com/*
@@ -11,7 +11,7 @@
 
 var funcs = [
     [addInfluence, ['/universities/[^/]+', '/countries/[^/]+']],
-    [resubmitLink, ['/submissions/[^/]+']]
+    [resubmitLink, ['/submissions/[^/]+']],
 ];
 
 for(var i = 0; i < funcs.length; i++) {
@@ -32,11 +32,17 @@ function addInfluence() {
     var table = tables[tables.length - 1];
     table.querySelector('thead tr').innerHTML += '<th>Influence</th>';
     var rows = table.querySelectorAll('tbody tr');
+    var influences = [];
+    var total_influence = 0;
     for(var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var score = parseFloat(row.querySelector('td:last-of-type').textContent);
+        var score = parseFloat(rows[i].querySelector('td:last-of-type').textContent);
         var influence = 1/f * Math.pow(1 - 1/f, i) * score;
-        row.innerHTML += '<td>' + influence.toFixed(1) + '</td>';
+        influences.push(influence);
+        total_influence += influence;
+    }
+    for (var i = 0; i < rows.length; i++) {
+        var percentage = (influences[i] / total_influence * 100).toFixed(1);
+        rows[i].innerHTML += '<td>' + influences[i].toFixed(1) + ' (' + percentage + '%)</td>';
     }
 }
 
